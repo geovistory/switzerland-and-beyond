@@ -1,0 +1,75 @@
+
+
+https://sparql.geovistory.org/api_v1_project_153
+
+
+## count persons and URIs
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xml: <http://www.w3.org/XML/1998/namespace>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+PREFIX time: <http://www.w3.org/2006/time#>
+PREFIX ontome-cl: <https://ontome.net/class/>
+PREFIX ontome-pr: <https://ontome.net/property/>
+PREFIX geov: <http://geovistory.org/resource/>
+
+SELECT (count(*) as ?eff)
+WHERE {
+  ?subject a ontome-cl:21;
+      ontome-pr:1943 ?object .
+}
+LIMIT 10
+
+
+
+
+
+## get persons and their URIs
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xml: <http://www.w3.org/XML/1998/namespace>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+PREFIX time: <http://www.w3.org/2006/time#>
+PREFIX ontome-cl: <https://ontome.net/class/>
+PREFIX ontome-pr: <https://ontome.net/property/>
+PREFIX geov: <http://geovistory.org/resource/>
+
+SELECT ?subject ?entityLabel ?object ?uri
+WHERE {
+  ?subject a ontome-cl:21;
+       rdfs:label ?entityLabel;
+      ontome-pr:1943 ?object.
+  ?object ontome-pr:1843 ?uri.
+}
+LIMIT 10
+
+
+
+### With birth year and URI
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xml: <http://www.w3.org/XML/1998/namespace>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+PREFIX time: <http://www.w3.org/2006/time#>
+PREFIX ontome-cl: <https://ontome.net/class/>
+PREFIX ontome-pr: <https://ontome.net/property/>
+PREFIX geov: <http://geovistory.org/resource/>
+PREFIX time: <http://www.w3.org/2006/time#>
+
+## get persons and their URIs with birthyear
+SELECT ?subject ?entityLabel (STR(?birthYear) as ?strYear) ?p ?o ?object (uri(strbefore(strafter(?uri, '"'), '"')) as ?strUri)
+WHERE {
+  ?subject a ontome-cl:21;
+       rdfs:label ?entityLabel;
+      ontome-pr:1943 ?object;
+     ^ontome-pr:86 / ontome-pr:4 / ontome-pr:72 / 	
+  time:year ?birthYear.
+  ?object ontome-pr:1843 ?uri.
+}
+LIMIT 100
